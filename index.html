@@ -133,7 +133,52 @@
             <p class="detail-status" data-detail-status>状态：正在打磨可交互原型</p>
           </div>
         </article>
-        <section class="moon-player is-hidden" data-moon-player aria-labelledby="moon-player-title" aria-hidden="true">
+        <section class="star-journal" data-star-journal aria-labelledby="star-journal-title">
+          <div class="star-orbit" aria-hidden="true">
+            <span class="orbit-ring"></span>
+            <span class="orbit-ring"></span>
+            <span class="orbit-core" data-star-progress>0%</span>
+          </div>
+          <div class="star-panel star-summary">
+            <p class="detail-kicker">Star Orbit Journal</p>
+            <h3 id="star-journal-title">星轨手帐</h3>
+            <p>把今天的创作任务和突然闪现的灵感收进同一片星空，完成一项，就让轨道亮一点。</p>
+            <div class="star-stats" aria-label="创作进度概览">
+              <span><strong data-star-done>0</strong> 已完成</span>
+              <span><strong data-star-total>0</strong> 今日任务</span>
+              <span><strong data-star-notes>0</strong> 灵感片段</span>
+            </div>
+          </div>
+          <form class="star-panel star-form" data-star-task-form>
+            <label for="star-task-input">今日星轨任务</label>
+            <div class="star-input-row">
+              <input id="star-task-input" data-star-task-input type="text" maxlength="36" placeholder="例如：整理角色设定草稿" autocomplete="off" />
+              <button type="submit">添加任务</button>
+            </div>
+          </form>
+          <div class="star-panel star-list-panel">
+            <div class="star-panel-head">
+              <h4>任务轨道</h4>
+              <span data-star-task-status aria-live="polite">等待任务点亮</span>
+            </div>
+            <ul class="star-task-list" data-star-task-list aria-live="polite"></ul>
+          </div>
+          <form class="star-panel star-form star-note-form" data-star-note-form>
+            <label for="star-note-input">灵感片段</label>
+            <textarea id="star-note-input" data-star-note-input maxlength="120" rows="3" placeholder="记录一句台词、一个画面或一个新点子"></textarea>
+            <div class="star-input-row">
+              <input data-star-note-tag type="text" maxlength="12" placeholder="标签，如 分镜" autocomplete="off" />
+              <button type="submit">收进手帐</button>
+            </div>
+          </form>
+          <div class="star-panel star-list-panel star-notes-panel">
+            <div class="star-panel-head">
+              <h4>灵感手帐</h4>
+              <span data-star-note-status aria-live="polite">等待灵感落星</span>
+            </div>
+            <div class="star-note-list" data-star-note-list aria-live="polite"></div>
+          </div>
+        </section>        <section class="moon-player is-hidden" data-moon-player aria-labelledby="moon-player-title" aria-hidden="true">
           <audio data-moon-audio preload="metadata"></audio>
           <div class="moon-cover" data-moon-cover>
             <div class="moon-disc" aria-hidden="true">

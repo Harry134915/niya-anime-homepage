@@ -12,7 +12,7 @@ const workDetails = {
     summary: "用时间轴和星座视觉管理创作进度，把零散灵感收束成每日可推进的小任务。",
     highlights: ["星轨式进度视图", "灵感片段快速归档", "温柔的任务完成反馈"],
     stack: "HTML, CSS Grid, Motion Notes",
-    status: "状态：正在打磨可交互原型",
+    status: "状态：已接入星轨任务和灵感手帐，支持本地保存",
     previewClass: "thumb-one",
   },
   月色音乐盒: {
@@ -67,6 +67,20 @@ const detailHighlights = document.querySelector("[data-detail-highlights]");
 const detailStack = document.querySelector("[data-detail-stack]");
 const detailStatus = document.querySelector("[data-detail-status]");
 
+const starJournal = document.querySelector("[data-star-journal]");
+const starProgress = document.querySelector("[data-star-progress]");
+const starDone = document.querySelector("[data-star-done]");
+const starTotal = document.querySelector("[data-star-total]");
+const starNotesCount = document.querySelector("[data-star-notes]");
+const starTaskForm = document.querySelector("[data-star-task-form]");
+const starTaskInput = document.querySelector("[data-star-task-input]");
+const starTaskList = document.querySelector("[data-star-task-list]");
+const starTaskStatus = document.querySelector("[data-star-task-status]");
+const starNoteForm = document.querySelector("[data-star-note-form]");
+const starNoteInput = document.querySelector("[data-star-note-input]");
+const starNoteTag = document.querySelector("[data-star-note-tag]");
+const starNoteList = document.querySelector("[data-star-note-list]");
+const starNoteStatus = document.querySelector("[data-star-note-status]");
 const moonPlayer = document.querySelector("[data-moon-player]");
 const moonAudio = document.querySelector("[data-moon-audio]");
 const moonTitle = document.querySelector("[data-moon-title]");
@@ -196,6 +210,139 @@ const playCurrentTrack = async () => {
   updatePlayButton();
 };
 
+const defaultStarTasks = [
+  { id: "task-outline", title: "整理角色设定草稿", done: true },
+  { id: "task-scene", title: "补一张星空分镜缩略图", done: false },
+  { id: "task-polish", title: "给作品区动效做一次检查", done: false },
+];
+const defaultStarNotes = [
+  { id: "note-window", text: "窗边的星光像贴纸一样落在手帐边缘。", tag: "画面" },
+  { id: "note-line", text: "今天也要把小小的灵感推进一格。", tag: "台词" },
+];
+const starStorageKey = "niya-star-journal";
+let starTasks = [];
+let starNotes = [];
+
+const createStarId = (prefix) => `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+const loadStarJournal = () => {
+  try {
+    const saved = JSON.parse(localStorage.getItem(starStorageKey) || "null");
+
+    if (saved && Array.isArray(saved.tasks) && Array.isArray(saved.notes)) {
+      starTasks = saved.tasks;
+      starNotes = saved.notes;
+      return;
+    }
+  } catch {
+    localStorage.removeItem(starStorageKey);
+  }
+
+  starTasks = defaultStarTasks.map((task) => ({ ...task }));
+  starNotes = defaultStarNotes.map((note) => ({ ...note }));
+};
+
+const saveStarJournal = () => {
+  localStorage.setItem(starStorageKey, JSON.stringify({ tasks: starTasks, notes: starNotes }));
+};
+
+const renderStarJournal = () => {
+  const total = starTasks.length;
+  const done = starTasks.filter((task) => task.done).length;
+  const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+
+  starProgress.textContent = `${percent}%`;
+  starProgress.style.setProperty("--star-progress", `${percent}%`);
+  starDone.textContent = String(done);
+  starTotal.textContent = String(total);
+  starNotesCount.textContent = String(starNotes.length);
+  starTaskStatus.textContent = total > 0 ? `${done}/${total} 颗星已点亮` : "等待任务点亮";
+  starNoteStatus.textContent = starNotes.length > 0 ? `${starNotes.length} 条灵感已收纳` : "等待灵感落星";
+
+  if (starTasks.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "star-empty";
+    empty.textContent = "还没有任务，先写下一颗今天想点亮的星。";
+    starTaskList.replaceChildren(empty);
+  } else {
+    starTaskList.replaceChildren(
+      ...starTasks.map((task) => {
+        const item = document.createElement("li");
+        item.className = `star-task${task.done ? " is-done" : ""}`;
+
+        const toggle = document.createElement("button");
+        toggle.className = "star-toggle";
+        toggle.type = "button";
+        toggle.textContent = task.done ? "已完成" : "完成";
+        toggle.setAttribute("aria-label", `${task.done ? "取消完成" : "完成"}任务：${task.title}`);
+        toggle.addEventListener("click", () => {
+          task.done = !task.done;
+          saveStarJournal();
+          renderStarJournal();
+        });
+
+        const title = document.createElement("span");
+        title.className = "star-task-title";
+        title.textContent = task.title;
+
+        const remove = document.createElement("button");
+        remove.className = "star-delete";
+        remove.type = "button";
+        remove.textContent = "删除";
+        remove.setAttribute("aria-label", `删除任务：${task.title}`);
+        remove.addEventListener("click", () => {
+          starTasks = starTasks.filter((current) => current.id !== task.id);
+          saveStarJournal();
+          renderStarJournal();
+        });
+
+        item.append(toggle, title, remove);
+        return item;
+      })
+    );
+  }
+
+  if (starNotes.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "star-empty";
+    empty.textContent = "灵感还在路上，等它落下时就收进这里。";
+    starNoteList.replaceChildren(empty);
+  } else {
+    starNoteList.replaceChildren(
+      ...starNotes.map((note) => {
+        const item = document.createElement("article");
+        item.className = "star-note";
+
+        const text = document.createElement("p");
+        text.textContent = note.text;
+
+        const footer = document.createElement("footer");
+        const tag = document.createElement("small");
+        tag.textContent = `#${note.tag || "灵感"}`;
+
+        const remove = document.createElement("button");
+        remove.className = "star-delete";
+        remove.type = "button";
+        remove.textContent = "删除";
+        remove.setAttribute("aria-label", `删除灵感：${note.text}`);
+        remove.addEventListener("click", () => {
+          starNotes = starNotes.filter((current) => current.id !== note.id);
+          saveStarJournal();
+          renderStarJournal();
+        });
+
+        footer.append(tag, remove);
+        item.append(text, footer);
+        return item;
+      })
+    );
+  }
+};
+
+const toggleStarJournal = (isActive) => {
+  starJournal.classList.toggle("is-hidden", !isActive);
+  starJournal.setAttribute("aria-hidden", String(!isActive));
+};
 const toggleMoonPlayer = (isActive) => {
   moonPlayer.classList.toggle("is-hidden", !isActive);
   moonPlayer.setAttribute("aria-hidden", String(!isActive));
@@ -246,6 +393,7 @@ const selectWorkCard = (card) => {
   );
   detailStack.textContent = detail.stack;
   detailStatus.textContent = detail.status;
+  toggleStarJournal(project === "星轨手帐");
   toggleMoonPlayer(project === "月色音乐盒");
 };
 
@@ -279,6 +427,9 @@ if (savedTheme) {
   setTheme(savedTheme === "night");
 }
 
+loadStarJournal();
+renderStarJournal();
+toggleStarJournal(true);
 renderMoonQueue();
 setMoonTrack(0);
 moonAudio.volume = Number(moonVolume.value);
@@ -293,6 +444,31 @@ document.querySelectorAll(".work-card").forEach((card) => {
   });
 });
 
+starTaskForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const title = starTaskInput.value.trim();
+
+  if (!title) return;
+
+  starTasks = [{ id: createStarId("task"), title, done: false }, ...starTasks];
+  starTaskInput.value = "";
+  saveStarJournal();
+  renderStarJournal();
+});
+
+starNoteForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const text = starNoteInput.value.trim();
+  const tag = starNoteTag.value.trim() || "灵感";
+
+  if (!text) return;
+
+  starNotes = [{ id: createStarId("note"), text, tag }, ...starNotes];
+  starNoteInput.value = "";
+  starNoteTag.value = "";
+  saveStarJournal();
+  renderStarJournal();
+});
 moonPlay.addEventListener("click", () => {
   if (moonAudio.paused || moonAudio.ended) {
     playCurrentTrack();
