@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Niya 的二次元风格个人主页，展示前端创作、界面设计、插画分镜和创作日记。"
+    />
+    <meta property="og:title" content="Niya - 二次元创作者" />
+    <meta
+      property="og:description"
+      content="把动画分镜、细腻配色和前端交互揉在一起，做会发光的数字小世界。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./assets/hero-illustration.jpg" />
+    <meta name="theme-color" content="#fff8ff" />
+    <title>Niya - 二次元创作者</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Quicksand:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <header class="site-header" id="top">
+      <a class="brand" href="#top" aria-label="Niya 主页">
+        <span class="brand-mark">N</span>
+        <span>Niya</span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="#top">主页</a>
+        <a href="#works">作品</a>
+        <a href="#skills">技能</a>
+        <a href="#diary">日记</a>
+        <a href="#contact">联系</a>
+      </nav>
+      <div class="header-actions">
+        <section class="mini-player" data-mini-player aria-label="迷你播放器">
+          <button class="mini-track" type="button" data-mini-open aria-label="打开月色音乐盒完整播放器">
+            <span class="mini-dot" aria-hidden="true"></span>
+            <span>
+              <strong data-mini-title>Moonlit Room</strong>
+              <small data-mini-scene>月色房间</small>
+            </span>
+          </button>
+          <div class="mini-controls">
+            <button class="mini-icon" type="button" data-mini-prev aria-label="上一首">‹</button>
+            <button class="mini-play" type="button" data-mini-play aria-label="播放 Moonlit Room">播放</button>
+            <button class="mini-icon" type="button" data-mini-next aria-label="下一首">›</button>
+          </div>
+          <progress class="mini-progress" data-mini-progress max="100" value="0" aria-label="播放进度"></progress>
+        </section>
+        <button class="theme-toggle" type="button" aria-label="切换夜间模式" aria-pressed="false">
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="role">二次元创作者 / Front-end Dreamer</p>
+          <h1 id="hero-title">把灵感做成会发光的界面。</h1>
+          <p class="intro">
+            我是 Niya，喜欢把动画分镜、细腻配色和前端交互揉在一起，做有温度、会回应人的数字小世界。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#works">查看作品</a>
+            <a class="button secondary" href="#contact">写信给我</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Niya 的创作空间插画">
+          <img
+            src="./assets/hero-illustration.jpg"
+            alt="动漫风创作者在暮光房间里使用电脑的插画"
+            width="1672"
+            height="941"
+          />
+          <div class="now-playing">
+            <span class="equalizer" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span>Lo-fi coding night</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section works" id="works" aria-labelledby="works-title">
+        <div class="section-heading">
+          <h2 id="works-title">精选作品</h2>
+          <p>一些关于界面、故事和微小动效的实验。</p>
+        </div>
+        <div class="work-layout">
+          <article class="work-card featured selected" data-project="星轨手帐" tabindex="0" role="button" aria-pressed="true">
+            <div class="work-thumb thumb-one"></div>
+            <h3>星轨手帐</h3>
+            <p>用时间轴和星座视觉管理创作进度，给日常任务一点魔法感。</p>
+          </article>
+          <article class="work-card" data-project="月色音乐盒" tabindex="0" role="button" aria-pressed="false">
+            <div class="work-thumb thumb-two"></div>
+            <h3>月色音乐盒</h3>
+            <p>一款带场景变化的音乐播放器界面，夜晚越深，光越柔。</p>
+          </article>
+          <article class="work-card" data-project="像素花店" tabindex="0" role="button" aria-pressed="false">
+            <div class="work-thumb thumb-three"></div>
+            <h3>像素花店</h3>
+            <p>小型电商原型，把像素物件、库存和愿望清单组合成轻游戏体验。</p>
+          </article>
+        </div>
+        <article class="work-detail" aria-live="polite" aria-labelledby="work-detail-title">
+          <div class="detail-preview thumb-one" data-detail-preview></div>
+          <div class="detail-copy">
+            <p class="detail-kicker" data-detail-type>创作管理原型</p>
+            <h3 id="work-detail-title" data-detail-title>星轨手帐</h3>
+            <p data-detail-summary>
+              用时间轴和星座视觉管理创作进度，把零散灵感收束成每日可推进的小任务。
+            </p>
+            <div class="detail-columns">
+              <div>
+                <span class="detail-label">亮点</span>
+                <ul class="detail-list" data-detail-highlights>
+                  <li>星轨式进度视图</li>
+                  <li>灵感片段快速归档</li>
+                  <li>温柔的任务完成反馈</li>
+                </ul>
+              </div>
+              <div>
+                <span class="detail-label">工具栈</span>
+                <p class="detail-stack" data-detail-stack>HTML, CSS Grid, Motion Notes</p>
+              </div>
+            </div>
+            <p class="detail-status" data-detail-status>状态：正在打磨可交互原型</p>
+          </div>
+        </article>
+        <section class="moon-player is-hidden" data-moon-player aria-labelledby="moon-player-title" aria-hidden="true">
+          <audio data-moon-audio preload="metadata"></audio>
+          <div class="moon-cover" data-moon-cover>
+            <div class="moon-disc" aria-hidden="true">
+              <span></span>
+            </div>
+            <div class="moon-scene">
+              <span data-moon-scene>月色房间</span>
+              <strong data-moon-title>Moonlit Room</strong>
+              <p data-moon-description>温柔的夜间循环，适合整理灵感和慢速编码。</p>
+            </div>
+          </div>
+          <div class="moon-console">
+            <div class="moon-heading">
+              <div>
+                <p class="detail-kicker">Moon Music Box</p>
+                <h3 id="moon-player-title">月色音乐盒</h3>
+              </div>
+              <span class="moon-status" data-moon-status aria-live="polite">选择曲目后即可播放</span>
+            </div>
+            <div class="moon-controls" aria-label="播放器控制">
+              <button class="moon-control" type="button" data-moon-prev aria-label="上一首">上一首</button>
+              <button class="moon-play" type="button" data-moon-play aria-label="播放 Moonlit Room">播放</button>
+              <button class="moon-control" type="button" data-moon-next aria-label="下一首">下一首</button>
+            </div>
+            <div class="moon-progress">
+              <span data-moon-current>00:00</span>
+              <input data-moon-progress type="range" min="0" max="100" value="0" step="1" aria-label="播放进度" />
+              <span data-moon-duration>--:--</span>
+            </div>
+            <label class="moon-volume">
+              <span>音量</span>
+              <input data-moon-volume type="range" min="0" max="1" value="0.72" step="0.01" />
+            </label>
+            <div class="moon-queue" data-moon-queue aria-label="播放队列"></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="section skills" id="skills" aria-labelledby="skills-title">
+        <div class="section-heading">
+          <h2 id="skills-title">技能状态</h2>
+          <p>偏爱把视觉系统、组件结构和可访问性一起打磨。</p>
+        </div>
+        <div class="skill-grid">
+          <div class="skill-row">
+            <span>界面设计</span>
+            <meter min="0" max="100" value="92">92%</meter>
+          </div>
+          <div class="skill-row">
+            <span>React / Motion</span>
+            <meter min="0" max="100" value="88">88%</meter>
+          </div>
+          <div class="skill-row">
+            <span>插画分镜</span>
+            <meter min="0" max="100" value="81">81%</meter>
+          </div>
+          <div class="skill-row">
+            <span>设计系统</span>
+            <meter min="0" max="100" value="86">86%</meter>
+          </div>
+        </div>
+      </section>
+
+      <section class="section diary" id="diary" aria-labelledby="diary-title">
+        <div class="section-heading">
+          <h2 id="diary-title">最近日记</h2>
+          <p>记录正在发生的小想法，不一定宏大，但都带着光。</p>
+        </div>
+        <div class="diary-list">
+          <article>
+            <time datetime="2026-06-28">06.28</time>
+            <h3>给按钮加了一点“呼吸”</h3>
+            <p>细节不应该抢戏，但它可以在你靠近时轻轻回应。</p>
+          </article>
+          <article>
+            <time datetime="2026-06-20">06.20</time>
+            <h3>重画了首页角色的侧光</h3>
+            <p>暮光色调比纯粉色更耐看，也更像真正的晚上。</p>
+          </article>
+          <article>
+            <time datetime="2026-06-12">06.12</time>
+            <h3>把作品集改成横向浏览</h3>
+            <p>让每个项目像一张分镜，而不是一格普通卡片。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact" id="contact" aria-labelledby="contact-title">
+        <div>
+          <h2 id="contact-title">保持联系</h2>
+          <p>如果你也喜欢温柔、清晰、带一点幻想感的界面，我们可以一起做点可爱的东西。</p>
+        </div>
+        <button class="button primary contact-button" type="button">写信给我</button>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Niya</span>
+      <span>Made with starlight and careful CSS.</span>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
