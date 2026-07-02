@@ -178,7 +178,35 @@
             </div>
             <div class="star-note-list" data-star-note-list aria-live="polite"></div>
           </div>
-        </section>        <section class="moon-player is-hidden" data-moon-player aria-labelledby="moon-player-title" aria-hidden="true">
+        </section>
+        <section class="pixel-shop is-hidden" data-pixel-shop aria-labelledby="pixel-shop-title" aria-hidden="true">
+          <div class="pixel-counter">
+            <p class="detail-kicker">Pixel Flower Shop</p>
+            <h3 id="pixel-shop-title">像素花店</h3>
+            <p data-pixel-status aria-live="polite">阅读顾客需求，选择最合适的花束完成订单。</p>
+            <div class="pixel-stats" aria-label="今日营业状态">
+              <span><strong data-pixel-completed>0</strong> 完成订单</span>
+              <span><strong data-pixel-stock>0</strong> 剩余库存</span>
+              <span><strong data-pixel-wishlist>0</strong> 愿望清单</span>
+            </div>
+          </div>
+          <div class="pixel-order-card">
+            <span class="pixel-badge">今日订单</span>
+            <h4 data-pixel-order-title>等待顾客</h4>
+            <p data-pixel-order-copy>花店正在整理订单。</p>
+            <div class="pixel-tags" data-pixel-order-tags></div>
+            <p class="pixel-feedback" data-pixel-feedback aria-live="polite">选择一束花来回应这位顾客。</p>
+          </div>
+          <div class="pixel-shelf" data-pixel-shelf aria-label="像素花束货架"></div>
+          <aside class="pixel-wishlist" aria-label="愿望清单">
+            <div class="pixel-panel-head">
+              <h4>愿望清单</h4>
+              <button type="button" data-pixel-reset>重置花店</button>
+            </div>
+            <div class="pixel-wishlist-list" data-pixel-wishlist-list aria-live="polite"></div>
+          </aside>
+        </section>
+        <section class="moon-player is-hidden" data-moon-player aria-labelledby="moon-player-title" aria-hidden="true">
           <audio data-moon-audio preload="metadata"></audio>
           <div class="moon-cover" data-moon-cover>
             <div class="moon-disc" aria-hidden="true">

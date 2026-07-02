@@ -30,7 +30,7 @@ const workDetails = {
     summary: "把像素花束、库存和愿望清单结合成轻游戏式购买体验，让浏览商品更像整理一座小花园。",
     highlights: ["像素网格商品预览", "愿望清单反馈", "库存状态的游戏化表达"],
     stack: "HTML, CSS Patterns, Prototype Logic",
-    status: "状态：概念验证完成，适合继续扩展商品页",
+    status: "状态：已接入订单配花、库存和愿望清单互动",
     previewClass: "thumb-three",
   },
 };
@@ -81,6 +81,18 @@ const starNoteInput = document.querySelector("[data-star-note-input]");
 const starNoteTag = document.querySelector("[data-star-note-tag]");
 const starNoteList = document.querySelector("[data-star-note-list]");
 const starNoteStatus = document.querySelector("[data-star-note-status]");
+const pixelShop = document.querySelector("[data-pixel-shop]");
+const pixelStatus = document.querySelector("[data-pixel-status]");
+const pixelCompleted = document.querySelector("[data-pixel-completed]");
+const pixelStock = document.querySelector("[data-pixel-stock]");
+const pixelWishlistCount = document.querySelector("[data-pixel-wishlist]");
+const pixelOrderTitle = document.querySelector("[data-pixel-order-title]");
+const pixelOrderCopy = document.querySelector("[data-pixel-order-copy]");
+const pixelOrderTags = document.querySelector("[data-pixel-order-tags]");
+const pixelFeedback = document.querySelector("[data-pixel-feedback]");
+const pixelShelf = document.querySelector("[data-pixel-shelf]");
+const pixelWishlistList = document.querySelector("[data-pixel-wishlist-list]");
+const pixelReset = document.querySelector("[data-pixel-reset]");
 const moonPlayer = document.querySelector("[data-moon-player]");
 const moonAudio = document.querySelector("[data-moon-audio]");
 const moonTitle = document.querySelector("[data-moon-title]");
@@ -343,6 +355,245 @@ const toggleStarJournal = (isActive) => {
   starJournal.classList.toggle("is-hidden", !isActive);
   starJournal.setAttribute("aria-hidden", String(!isActive));
 };
+const pixelBouquets = [
+  {
+    id: "moon-lily",
+    name: "月光铃兰",
+    tags: ["治愈", "梦幻"],
+    stock: 3,
+    description: "适合安静夜晚和轻轻鼓励。",
+    bg: "linear-gradient(135deg, #9b7cff, #44d8ef)",
+    main: "#d9ccff",
+  },
+  {
+    id: "berry-rose",
+    name: "草莓玫瑰",
+    tags: ["元气", "告白"],
+    stock: 3,
+    description: "甜亮、直接，像开场曲一样有精神。",
+    bg: "linear-gradient(135deg, #ff7fb5, #ffd36a)",
+    main: "#ff7fb5",
+  },
+  {
+    id: "star-daisy",
+    name: "星星雏菊",
+    tags: ["祝福", "梦幻"],
+    stock: 2,
+    description: "给新计划和好消息一点闪光。",
+    bg: "linear-gradient(135deg, #ffd36a, #9b7cff)",
+    main: "#ffd36a",
+  },
+  {
+    id: "mint-hydrangea",
+    name: "薄荷绣球",
+    tags: ["清爽", "道歉"],
+    stock: 2,
+    description: "不沉重的真诚，带一点清凉。",
+    bg: "linear-gradient(135deg, #44d8ef, #b8f7d4)",
+    main: "#78e7d5",
+  },
+  {
+    id: "pixel-sunflower",
+    name: "像素向日葵",
+    tags: ["元气", "鼓励"],
+    stock: 2,
+    description: "适合把低电量的一天重新点亮。",
+    bg: "linear-gradient(135deg, #ffd36a, #ff9f6e)",
+    main: "#ffd36a",
+  },
+];
+const pixelOrders = [
+  {
+    title: "给熬夜画画的朋友一束温柔的花",
+    copy: "希望它安静、治愈，还带一点夜里的梦幻感。",
+    needs: ["治愈"],
+  },
+  {
+    title: "想给新企划一个明亮开场",
+    copy: "需要一束看起来元气、轻快、像片头曲一样的花。",
+    needs: ["元气"],
+  },
+  {
+    title: "想认真道歉，但不要太沉重",
+    copy: "客人希望表达真诚，也希望对方不会感到压力。",
+    needs: ["道歉"],
+  },
+];
+const pixelStorageKey = "niya-pixel-shop";
+let pixelState = null;
+
+const createDefaultPixelState = () => ({
+  stock: Object.fromEntries(pixelBouquets.map((bouquet) => [bouquet.id, bouquet.stock])),
+  wishlist: [],
+  orderIndex: 0,
+  completed: 0,
+  message: "阅读顾客需求，选择最合适的花束完成订单。",
+});
+
+const loadPixelShop = () => {
+  try {
+    const saved = JSON.parse(localStorage.getItem(pixelStorageKey) || "null");
+
+    if (saved && saved.stock && Array.isArray(saved.wishlist)) {
+      pixelState = {
+        ...createDefaultPixelState(),
+        ...saved,
+        stock: { ...createDefaultPixelState().stock, ...saved.stock },
+      };
+      return;
+    }
+  } catch {
+    localStorage.removeItem(pixelStorageKey);
+  }
+
+  pixelState = createDefaultPixelState();
+};
+
+const savePixelShop = () => {
+  localStorage.setItem(pixelStorageKey, JSON.stringify(pixelState));
+};
+
+const getCurrentPixelOrder = () => pixelOrders[pixelState.orderIndex % pixelOrders.length];
+
+const renderPixelTags = (tags) => tags.map((tag) => {
+  const item = document.createElement("span");
+  item.className = "pixel-tag";
+  item.textContent = tag;
+  return item;
+});
+
+const renderPixelShop = () => {
+  const order = getCurrentPixelOrder();
+  const totalStock = pixelBouquets.reduce((sum, bouquet) => sum + Number(pixelState.stock[bouquet.id] || 0), 0);
+
+  pixelStatus.textContent = pixelState.message;
+  pixelFeedback.textContent = pixelState.message;
+  pixelCompleted.textContent = String(pixelState.completed);
+  pixelStock.textContent = String(totalStock);
+  pixelWishlistCount.textContent = String(pixelState.wishlist.length);
+  pixelOrderTitle.textContent = order.title;
+  pixelOrderCopy.textContent = order.copy;
+  pixelOrderTags.replaceChildren(...renderPixelTags(order.needs));
+
+  pixelShelf.replaceChildren(
+    ...pixelBouquets.map((bouquet) => {
+      const stock = Number(pixelState.stock[bouquet.id] || 0);
+      const wished = pixelState.wishlist.includes(bouquet.id);
+      const card = document.createElement("article");
+      card.className = `pixel-flower${stock <= 0 ? " is-sold-out" : ""}`;
+      card.style.setProperty("--flower-bg", bouquet.bg);
+      card.style.setProperty("--flower-main", bouquet.main);
+
+      const art = document.createElement("div");
+      art.className = "pixel-art";
+      art.setAttribute("aria-hidden", "true");
+      const sprite = document.createElement("span");
+      sprite.className = "pixel-sprite";
+      art.append(sprite);
+
+      const title = document.createElement("h4");
+      title.textContent = bouquet.name;
+
+      const description = document.createElement("p");
+      description.textContent = bouquet.description;
+
+      const meta = document.createElement("div");
+      meta.className = "pixel-flower-meta";
+      const stockBadge = document.createElement("span");
+      stockBadge.className = "pixel-stock";
+      stockBadge.textContent = stock > 0 ? `库存 ${stock}` : "售罄";
+      meta.append(stockBadge, ...renderPixelTags(bouquet.tags));
+
+      const actions = document.createElement("div");
+      actions.className = "pixel-actions";
+      const choose = document.createElement("button");
+      choose.type = "button";
+      choose.textContent = stock > 0 ? "配这束" : "已售罄";
+      choose.disabled = stock <= 0;
+      choose.setAttribute("aria-label", `用${bouquet.name}完成当前订单`);
+      choose.addEventListener("click", () => choosePixelBouquet(bouquet.id));
+
+      const wish = document.createElement("button");
+      wish.type = "button";
+      wish.className = `pixel-wish-button${wished ? " is-active" : ""}`;
+      wish.textContent = wished ? "已收藏" : "收藏";
+      wish.setAttribute("aria-label", `${wished ? "移出" : "加入"}愿望清单：${bouquet.name}`);
+      wish.addEventListener("click", () => togglePixelWishlist(bouquet.id));
+      actions.append(choose, wish);
+
+      card.append(art, title, description, meta, actions);
+      return card;
+    })
+  );
+
+  if (pixelState.wishlist.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "pixel-empty";
+    empty.textContent = "还没有收藏花束。";
+    pixelWishlistList.replaceChildren(empty);
+  } else {
+    pixelWishlistList.replaceChildren(
+      ...pixelState.wishlist.map((id) => {
+        const bouquet = pixelBouquets.find((item) => item.id === id);
+        const item = document.createElement("span");
+        item.textContent = bouquet?.name || "未知花束";
+        return item;
+      })
+    );
+  }
+};
+
+const choosePixelBouquet = (bouquetId) => {
+  const bouquet = pixelBouquets.find((item) => item.id === bouquetId);
+  const order = getCurrentPixelOrder();
+  const stock = Number(pixelState.stock[bouquetId] || 0);
+
+  if (!bouquet || stock <= 0) {
+    pixelState.message = "这束花已经售罄，换一束试试看。";
+    renderPixelShop();
+    return;
+  }
+
+  const matched = order.needs.some((need) => bouquet.tags.includes(need));
+
+  if (!matched) {
+    pixelState.message = `${bouquet.name} 很可爱，但这位客人更想要 ${order.needs.join("、")} 的感觉，请换一束带对应标签的花。`;
+    savePixelShop();
+    renderPixelShop();
+    return;
+  }
+
+  pixelState.stock[bouquetId] = stock - 1;
+  pixelState.completed += 1;
+  pixelState.orderIndex = (pixelState.orderIndex + 1) % pixelOrders.length;
+  pixelState.message = `订单完成：${bouquet.name} 正好装进了客人的心情。`;
+  savePixelShop();
+  renderPixelShop();
+};
+
+const togglePixelWishlist = (bouquetId) => {
+  if (pixelState.wishlist.includes(bouquetId)) {
+    pixelState.wishlist = pixelState.wishlist.filter((id) => id !== bouquetId);
+    pixelState.message = "已从愿望清单移除。";
+  } else {
+    pixelState.wishlist = [...pixelState.wishlist, bouquetId];
+    pixelState.message = "已加入愿望清单。";
+  }
+
+  savePixelShop();
+  renderPixelShop();
+};
+
+const resetPixelShop = () => {
+  pixelState = createDefaultPixelState();
+  savePixelShop();
+  renderPixelShop();
+};
+
+const togglePixelShop = (isActive) => {
+  pixelShop.classList.toggle("is-hidden", !isActive);
+  pixelShop.setAttribute("aria-hidden", String(!isActive));
+};
 const toggleMoonPlayer = (isActive) => {
   moonPlayer.classList.toggle("is-hidden", !isActive);
   moonPlayer.setAttribute("aria-hidden", String(!isActive));
@@ -394,6 +645,7 @@ const selectWorkCard = (card) => {
   detailStack.textContent = detail.stack;
   detailStatus.textContent = detail.status;
   toggleStarJournal(project === "星轨手帐");
+  togglePixelShop(project === "像素花店");
   toggleMoonPlayer(project === "月色音乐盒");
 };
 
@@ -430,6 +682,9 @@ if (savedTheme) {
 loadStarJournal();
 renderStarJournal();
 toggleStarJournal(true);
+loadPixelShop();
+renderPixelShop();
+togglePixelShop(false);
 renderMoonQueue();
 setMoonTrack(0);
 moonAudio.volume = Number(moonVolume.value);
@@ -455,6 +710,8 @@ starTaskForm.addEventListener("submit", (event) => {
   saveStarJournal();
   renderStarJournal();
 });
+
+pixelReset.addEventListener("click", resetPixelShop);
 
 starNoteForm.addEventListener("submit", (event) => {
   event.preventDefault();

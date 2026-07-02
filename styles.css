@@ -967,6 +967,302 @@ body.night .star-note {
     width: 100%;
   }
 }
+.pixel-shop {
+  display: grid;
+  grid-template-columns: minmax(17rem, 0.82fr) minmax(0, 1.18fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  border: 1px solid rgba(255, 127, 181, 0.28);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    radial-gradient(circle at 22% 20%, rgba(255, 211, 106, 0.34), transparent 8rem),
+    radial-gradient(circle at 78% 70%, rgba(68, 216, 239, 0.24), transparent 9rem),
+    linear-gradient(135deg, rgba(255, 127, 181, 0.14), rgba(255, 211, 106, 0.16) 48%, rgba(68, 216, 239, 0.14)),
+    var(--surface-strong);
+  background-size: 18px 18px, 18px 18px, auto, auto, auto, auto;
+  box-shadow: 0 24px 60px rgba(111, 78, 137, 0.14);
+}
+
+.pixel-shop.is-hidden {
+  display: none;
+}
+
+.pixel-counter,
+.pixel-order-card,
+.pixel-wishlist {
+  min-width: 0;
+  border: 1px solid rgba(101, 71, 128, 0.16);
+  border-radius: 8px;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 14px 32px rgba(111, 78, 137, 0.09);
+}
+
+body.night .pixel-counter,
+body.night .pixel-order-card,
+body.night .pixel-wishlist {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pixel-counter h3 {
+  margin-bottom: 0.7rem;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+.pixel-counter p,
+.pixel-order-card p {
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.pixel-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.pixel-stats span {
+  border-radius: 8px;
+  padding: 0.7rem;
+  background: rgba(255, 127, 181, 0.1);
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.pixel-stats strong {
+  display: block;
+  color: var(--ink);
+  font-size: 1.35rem;
+}
+
+.pixel-order-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.pixel-order-card::after {
+  content: "";
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  width: 3.5rem;
+  aspect-ratio: 1;
+  opacity: 0.55;
+  background:
+    linear-gradient(90deg, var(--pink) 25%, transparent 0 75%, var(--pink) 0),
+    linear-gradient(var(--gold) 25%, transparent 0 75%, var(--gold) 0);
+  background-size: 0.9rem 0.9rem;
+}
+
+.pixel-badge,
+.pixel-tag,
+.pixel-stock {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 8px;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.pixel-badge {
+  background: rgba(255, 211, 106, 0.24);
+  color: var(--violet);
+}
+
+.pixel-order-card h4 {
+  max-width: 26rem;
+  margin: 0.85rem 0 0.45rem;
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+}
+
+.pixel-feedback {
+  margin: 0.85rem 0 0;
+  border-radius: 8px;
+  padding: 0.7rem 0.8rem;
+  background: rgba(255, 127, 181, 0.1);
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.pixel-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.pixel-tag {
+  background: rgba(155, 124, 255, 0.12);
+  color: var(--violet);
+}
+
+.pixel-shelf {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  grid-row: span 2;
+}
+
+.pixel-flower {
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid rgba(101, 71, 128, 0.16);
+  border-radius: 8px;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 14px 32px rgba(111, 78, 137, 0.08);
+}
+
+body.night .pixel-flower {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pixel-flower.is-sold-out {
+  opacity: 0.58;
+}
+
+.pixel-art {
+  display: grid;
+  min-height: 8.2rem;
+  place-items: center;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+    var(--flower-bg, linear-gradient(135deg, #ff7fb5, #ffd36a));
+  background-size: 14px 14px, 14px 14px, auto;
+}
+
+.pixel-sprite {
+  width: 4.2rem;
+  aspect-ratio: 1;
+  background:
+    linear-gradient(var(--flower-main, #ff7fb5) 0 0) 50% 10% / 42% 42%,
+    linear-gradient(var(--flower-main, #ff7fb5) 0 0) 18% 34% / 34% 34%,
+    linear-gradient(var(--flower-main, #ff7fb5) 0 0) 66% 34% / 34% 34%,
+    linear-gradient(#59c98f 0 0) 50% 64% / 16% 46%,
+    linear-gradient(#46a878 0 0) 33% 82% / 32% 14%,
+    linear-gradient(#46a878 0 0) 63% 78% / 28% 14%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.38));
+}
+
+.pixel-flower h4 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.pixel-flower p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.pixel-flower-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pixel-stock {
+  background: rgba(68, 216, 239, 0.14);
+  color: var(--violet);
+}
+
+.pixel-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.55rem;
+}
+
+.pixel-actions button,
+.pixel-panel-head button {
+  min-height: 2.6rem;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 0.8rem;
+  background: linear-gradient(135deg, var(--pink), var(--violet));
+  color: white;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.pixel-actions button:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+  opacity: 0.62;
+}
+
+.pixel-wish-button.is-active {
+  background: linear-gradient(135deg, var(--gold), var(--pink));
+}
+
+.pixel-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.pixel-panel-head h4 {
+  margin: 0;
+  font-size: 0.94rem;
+}
+
+.pixel-panel-head button {
+  min-height: 2.2rem;
+  background: rgba(255, 127, 181, 0.13);
+  color: var(--pink);
+}
+
+.pixel-wishlist-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pixel-wishlist-list span,
+.pixel-empty {
+  border: 1px dashed rgba(155, 124, 255, 0.34);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .pixel-shop,
+  .pixel-shelf {
+    grid-template-columns: 1fr;
+  }
+
+  .pixel-shelf {
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .pixel-shop {
+    padding: 0.8rem;
+  }
+
+  .pixel-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .pixel-actions {
+    grid-template-columns: 1fr;
+  }
+}
 .moon-player {
   display: grid;
   grid-template-columns: minmax(18rem, 0.95fr) minmax(0, 1.05fr);
