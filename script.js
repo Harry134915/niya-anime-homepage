@@ -66,6 +66,10 @@ const detailSummary = document.querySelector("[data-detail-summary]");
 const detailHighlights = document.querySelector("[data-detail-highlights]");
 const detailStack = document.querySelector("[data-detail-stack]");
 const detailStatus = document.querySelector("[data-detail-status]");
+const workStatusItems = [...document.querySelectorAll("[data-status-target]")];
+const statusStar = document.querySelector("[data-status-star]");
+const statusMoon = document.querySelector("[data-status-moon]");
+const statusPixel = document.querySelector("[data-status-pixel]");
 
 const starJournal = document.querySelector("[data-star-journal]");
 const starProgress = document.querySelector("[data-star-progress]");
@@ -125,6 +129,26 @@ const formatTime = (seconds) => {
   return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
 };
 
+const updateWorkStatus = () => {
+  const selectedProject = document.querySelector(".work-card.selected")?.getAttribute("data-project") || "星轨手帐";
+  const starTotalCount = starTasks.length;
+  const starDoneCount = starTasks.filter((task) => task.done).length;
+  const track = moonTracks[currentTrackIndex];
+  const isPlaying = !moonAudio.paused && !moonAudio.ended;
+  const pixelStockCount = pixelState
+    ? pixelBouquets.reduce((sum, bouquet) => sum + Number(pixelState.stock[bouquet.id] || 0), 0)
+    : 0;
+
+  statusStar.textContent = `${starDoneCount}/${starTotalCount}`;
+  statusMoon.textContent = `${isPlaying ? "播放中 · " : "待播放 · "}${track.title}`;
+  statusPixel.textContent = `${pixelState?.completed || 0} 单 · 库存 ${pixelStockCount}`;
+
+  workStatusItems.forEach((item) => {
+    const isActive = item.getAttribute("data-status-target") === selectedProject;
+    item.classList.toggle("is-active", isActive);
+    item.setAttribute("aria-pressed", String(isActive));
+  });
+};
 const setPlayerStatus = (message) => {
   moonStatus.textContent = message;
 };
@@ -139,6 +163,7 @@ const updatePlayButton = () => {
   miniPlay.textContent = isPlaying ? "暂停" : "播放";
   miniPlay.setAttribute("aria-label", `${isPlaying ? "暂停" : "播放"} ${track.title}`);
   miniPlayer.classList.toggle("is-playing", isPlaying);
+  updateWorkStatus();
 };
 
 const updateMiniTrack = () => {
@@ -146,6 +171,7 @@ const updateMiniTrack = () => {
   miniTitle.textContent = track.title;
   miniScene.textContent = track.scene;
   miniOpen.setAttribute("aria-label", `打开 ${track.title} 的完整播放器`);
+  updateWorkStatus();
 };
 
 const renderMoonQueue = () => {
@@ -313,6 +339,8 @@ const renderStarJournal = () => {
       })
     );
   }
+
+  updateWorkStatus();
 
   if (starNotes.length === 0) {
     const empty = document.createElement("p");
@@ -526,6 +554,8 @@ const renderPixelShop = () => {
     })
   );
 
+  updateWorkStatus();
+
   if (pixelState.wishlist.length === 0) {
     const empty = document.createElement("p");
     empty.className = "pixel-empty";
@@ -647,6 +677,7 @@ const selectWorkCard = (card) => {
   toggleStarJournal(project === "星轨手帐");
   togglePixelShop(project === "像素花店");
   toggleMoonPlayer(project === "月色音乐盒");
+  updateWorkStatus();
 };
 
 const selectMoonProject = () => {
@@ -689,6 +720,17 @@ renderMoonQueue();
 setMoonTrack(0);
 moonAudio.volume = Number(moonVolume.value);
 
+workStatusItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    const target = item.getAttribute("data-status-target");
+    const card = document.querySelector(`[data-project="${target}"]`);
+
+    if (!card) return;
+
+    selectWorkCard(card);
+    document.querySelector("#works").scrollIntoView({ block: "start" });
+  });
+});
 document.querySelectorAll(".work-card").forEach((card) => {
   card.addEventListener("click", () => selectWorkCard(card));
   card.addEventListener("keydown", (event) => {

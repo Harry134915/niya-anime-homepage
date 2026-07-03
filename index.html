@@ -91,7 +91,20 @@
           <h2 id="works-title">精选作品</h2>
           <p>一些关于界面、故事和微小动效的实验。</p>
         </div>
-        <div class="work-layout">
+        <div class="work-status" aria-label="作品状态概览">
+          <button class="work-status-item" type="button" data-status-target="星轨手帐">
+            <span>今日星轨</span>
+            <strong data-status-star>0/0</strong>
+          </button>
+          <button class="work-status-item" type="button" data-status-target="月色音乐盒">
+            <span>月色音乐</span>
+            <strong data-status-moon>Moonlit Room</strong>
+          </button>
+          <button class="work-status-item" type="button" data-status-target="像素花店">
+            <span>花店订单</span>
+            <strong data-status-pixel>0 单</strong>
+          </button>
+        </div>        <div class="work-layout">
           <article class="work-card featured selected" data-project="星轨手帐" tabindex="0" role="button" aria-pressed="true">
             <div class="work-thumb thumb-one"></div>
             <h3>星轨手帐</h3>
