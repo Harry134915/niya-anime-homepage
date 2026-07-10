@@ -1842,10 +1842,37 @@ meter::-webkit-meter-optimum-value {
   font-weight: 800;
 }
 
-.contact-button:disabled {
-  cursor: not-allowed;
-  filter: saturate(0.55);
-  opacity: 0.68;
+.contact-email {
+  color: inherit;
+  text-decoration-color: rgba(109, 82, 217, 0.4);
+  text-underline-offset: 0.2em;
+}
+
+.contact-email:hover {
+  text-decoration-color: currentColor;
+}
+
+.contact .contact-feedback {
+  min-height: 1.5rem;
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.contact-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: end;
+}
+
+.contact-actions .button {
+  min-width: 7.25rem;
+  min-height: 2.75rem;
+  padding-inline: 1rem;
+  white-space: nowrap;
 }
 
 .footer {
@@ -1951,6 +1978,15 @@ meter::-webkit-meter-optimum-value {
   .footer {
     align-items: start;
     flex-direction: column;
+  }
+
+  .contact-actions {
+    width: 100%;
+    justify-content: start;
+  }
+
+  .contact-actions .button {
+    flex: 1 1 8rem;
   }
 
   .work-layout,
@@ -2160,8 +2196,22 @@ meter::-webkit-meter-optimum-value {
   }
 
   .hero-actions,
-  .contact-button {
+  .contact-actions {
     width: 100%;
+  }
+
+  .contact-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .contact-actions .button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .contact-github {
+    grid-column: 1 / -1;
   }
 
   .button {

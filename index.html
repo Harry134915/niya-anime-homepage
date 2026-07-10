@@ -375,12 +375,18 @@
       </section>
 
       <section class="contact" id="contact" aria-labelledby="contact-title">
-        <div>
+        <div class="contact-content">
           <h2 id="contact-title">保持联系</h2>
-          <p>如果你也喜欢温柔、清晰、带一点幻想感的界面，我们可以一起做点可爱的东西。</p>
-          <p class="contact-status" id="contact-status">联系邮箱：keyimeng880@gmail.com</p>
+          <p class="contact-status" id="contact-status">
+            联系邮箱：<a class="contact-email" href="mailto:keyimeng880@gmail.com">keyimeng880@gmail.com</a>
+          </p>
+          <p class="contact-feedback" data-contact-feedback aria-live="polite"></p>
         </div>
-        <a class="button primary contact-button" href="mailto:keyimeng880@gmail.com" aria-describedby="contact-status">发送邮件</a>
+        <div class="contact-actions" aria-label="联系方式">
+          <a class="button primary" href="mailto:keyimeng880@gmail.com" aria-describedby="contact-status">发送邮件</a>
+          <button class="button secondary contact-copy-button" type="button" data-copy-email aria-describedby="contact-status">复制邮箱</button>
+          <a class="button secondary contact-github" href="https://github.com/Harry134915" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
       </section>
     </main>
 

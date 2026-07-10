@@ -5,6 +5,9 @@ const sections = navLinks
 const themeToggle = document.querySelector(".theme-toggle");
 const themeColor = document.querySelector('meta[name="theme-color"]');
 const siteHeader = document.querySelector(".site-header");
+const copyEmailButton = document.querySelector("[data-copy-email]");
+const contactFeedback = document.querySelector("[data-contact-feedback]");
+const contactEmail = "keyimeng880@gmail.com";
 
 const workDetails = {
   星轨手帐: {
@@ -758,6 +761,11 @@ const updateActiveNav = () => {
     }
   });
 
+  const reachedPageEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+  if (reachedPageEnd) {
+    currentSection = sections[sections.length - 1];
+  }
+
   setActiveNav(currentSection.id);
 };
 
@@ -919,4 +927,13 @@ moonAudio.addEventListener("error", () => {
 
 themeToggle.addEventListener("click", () => {
   setTheme(!document.body.classList.contains("night"));
+});
+
+copyEmailButton.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(contactEmail);
+    contactFeedback.textContent = "邮箱已复制";
+  } catch {
+    contactFeedback.textContent = `复制失败，请手动复制：${contactEmail}`;
+  }
 });
