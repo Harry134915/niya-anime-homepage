@@ -3,7 +3,8 @@ const sections = navLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
   .filter(Boolean);
 const themeToggle = document.querySelector(".theme-toggle");
-const contactButton = document.querySelector(".contact-button");
+const themeColor = document.querySelector('meta[name="theme-color"]');
+const siteHeader = document.querySelector(".site-header");
 
 const workDetails = {
   星轨手帐: {
@@ -66,6 +67,8 @@ const detailSummary = document.querySelector("[data-detail-summary]");
 const detailHighlights = document.querySelector("[data-detail-highlights]");
 const detailStack = document.querySelector("[data-detail-stack]");
 const detailStatus = document.querySelector("[data-detail-status]");
+const workDetail = document.querySelector("[data-detail-title]").closest(".work-detail");
+const workCards = [...document.querySelectorAll(".work-card")];
 const workStatusItems = [...document.querySelectorAll("[data-status-target]")];
 const statusStar = document.querySelector("[data-status-star]");
 const statusMoon = document.querySelector("[data-status-moon]");
@@ -119,7 +122,16 @@ const miniPrev = document.querySelector("[data-mini-prev]");
 const miniPlay = document.querySelector("[data-mini-play]");
 const miniNext = document.querySelector("[data-mini-next]");
 const miniProgress = document.querySelector("[data-mini-progress]");
+const moonPlayerTitle = document.querySelector("#moon-player-title");
 let currentTrackIndex = 0;
+
+const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const scrollBehavior = () => (prefersReducedMotion() ? "auto" : "smooth");
+
+const syncHeaderOffset = () => {
+  const height = Math.ceil(siteHeader.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--header-height", `${height}px`);
+};
 
 const formatTime = (seconds) => {
   if (!Number.isFinite(seconds) || seconds < 0) return "--:--";
@@ -646,16 +658,24 @@ const setTheme = (isNight) => {
   document.body.classList.toggle("night", isNight);
   themeToggle.setAttribute("aria-pressed", String(isNight));
   themeToggle.setAttribute("aria-label", isNight ? "切换日间模式" : "切换夜间模式");
+  themeColor.setAttribute("content", isNight ? "#181329" : "#fff8ff");
   localStorage.setItem("niya-theme", isNight ? "night" : "day");
 };
 
-const selectWorkCard = (card) => {
+const revealElement = (element, focusTarget = null) => {
+  requestAnimationFrame(() => {
+    element.scrollIntoView({ behavior: scrollBehavior(), block: "start" });
+    focusTarget?.focus({ preventScroll: true });
+  });
+};
+
+const selectWorkCard = (card, { reveal = false } = {}) => {
   const project = card.getAttribute("data-project");
   const detail = workDetails[project];
 
   if (!detail) return;
 
-  document.querySelectorAll(".work-card").forEach((item) => {
+  workCards.forEach((item) => {
     const isSelected = item === card;
     item.classList.toggle("selected", isSelected);
     item.setAttribute("aria-pressed", String(isSelected));
@@ -678,6 +698,11 @@ const selectWorkCard = (card) => {
   togglePixelShop(project === "像素花店");
   toggleMoonPlayer(project === "月色音乐盒");
   updateWorkStatus();
+
+  if (reveal) {
+    setActiveNav("works");
+    revealElement(workDetail, detailTitle);
+  }
 };
 
 const selectMoonProject = () => {
@@ -686,24 +711,48 @@ const selectMoonProject = () => {
   if (!moonCard) return;
 
   selectWorkCard(moonCard);
-  document.querySelector("#works").scrollIntoView({ block: "start" });
+  setActiveNav("works");
+  revealElement(moonPlayer, moonPlayerTitle);
 };
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    const visible = entries
-      .filter((entry) => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+let navFrame = 0;
+const updateActiveNav = () => {
+  const probeLine = siteHeader.getBoundingClientRect().height + 24;
+  let currentSection = sections[0];
 
-    if (!visible) return;
+  sections.forEach((section) => {
+    if (section.getBoundingClientRect().top <= probeLine) {
+      currentSection = section;
+    }
+  });
 
-    setActiveNav(visible.target.id);
-  },
-  { rootMargin: "-30% 0px -55% 0px", threshold: [0.1, 0.35, 0.6] }
-);
+  setActiveNav(currentSection.id);
+};
 
-sections.forEach((section) => observer.observe(section));
-setActiveNav("top");
+const requestNavUpdate = () => {
+  if (navFrame) return;
+
+  navFrame = requestAnimationFrame(() => {
+    navFrame = 0;
+    updateActiveNav();
+  });
+};
+
+syncHeaderOffset();
+updateActiveNav();
+new ResizeObserver(syncHeaderOffset).observe(siteHeader);
+window.addEventListener("scroll", requestNavUpdate, { passive: true });
+window.addEventListener("load", () => {
+  syncHeaderOffset();
+  requestNavUpdate();
+});
+window.addEventListener("resize", () => {
+  syncHeaderOffset();
+  requestNavUpdate();
+});
+navLinks.forEach((link) => {
+  link.addEventListener("click", () => setActiveNav(link.getAttribute("href").slice(1)));
+});
 
 const savedTheme = localStorage.getItem("niya-theme");
 if (savedTheme) {
@@ -727,17 +776,23 @@ workStatusItems.forEach((item) => {
 
     if (!card) return;
 
-    selectWorkCard(card);
-    document.querySelector("#works").scrollIntoView({ block: "start" });
+    selectWorkCard(card, { reveal: true });
   });
 });
-document.querySelectorAll(".work-card").forEach((card) => {
-  card.addEventListener("click", () => selectWorkCard(card));
+workCards.forEach((card, index) => {
+  card.addEventListener("click", () => selectWorkCard(card, { reveal: true }));
   card.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      selectWorkCard(card);
-    }
+    const direction = ["ArrowRight", "ArrowDown"].includes(event.key)
+      ? 1
+      : ["ArrowLeft", "ArrowUp"].includes(event.key)
+        ? -1
+        : 0;
+
+    if (!direction) return;
+
+    event.preventDefault();
+    const nextIndex = (index + direction + workCards.length) % workCards.length;
+    workCards[nextIndex].focus();
   });
 });
 
@@ -832,13 +887,4 @@ moonAudio.addEventListener("error", () => {
 
 themeToggle.addEventListener("click", () => {
   setTheme(!document.body.classList.contains("night"));
-});
-
-contactButton.addEventListener("click", () => {
-  contactButton.setAttribute("aria-live", "polite");
-  contactButton.textContent = "收到灵感信号";
-
-  setTimeout(() => {
-    contactButton.textContent = "写信给我";
-  }, 1800);
 });

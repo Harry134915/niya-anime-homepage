@@ -7,25 +7,53 @@
       name="description"
       content="Niya 的二次元风格个人主页，展示前端创作、界面设计、插画分镜和创作日记。"
     />
+    <meta name="author" content="Niya" />
+    <meta name="robots" content="index, follow" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="canonical" href="https://harry134915.github.io/niya-anime-homepage/" />
     <meta property="og:title" content="Niya - 二次元创作者" />
     <meta
       property="og:description"
       content="把动画分镜、细腻配色和前端交互揉在一起，做会发光的数字小世界。"
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="./assets/hero-illustration.jpg" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:url" content="https://harry134915.github.io/niya-anime-homepage/" />
+    <meta property="og:image" content="https://harry134915.github.io/niya-anime-homepage/assets/hero-illustration.jpg" />
+    <meta property="og:image:width" content="1672" />
+    <meta property="og:image:height" content="941" />
+    <meta property="og:image:alt" content="动漫风创作者在暮光房间里使用电脑" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Niya - 二次元创作者" />
+    <meta
+      name="twitter:description"
+      content="把动画分镜、细腻配色和前端交互揉在一起，做会发光的数字小世界。"
+    />
+    <meta name="twitter:image" content="https://harry134915.github.io/niya-anime-homepage/assets/hero-illustration.jpg" />
     <meta name="theme-color" content="#fff8ff" />
     <title>Niya - 二次元创作者</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Quicksand:wght@600;700&display=swap" rel="stylesheet" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Niya",
+        "url": "https://harry134915.github.io/niya-anime-homepage/",
+        "email": "mailto:keyimeng880@gmail.com",
+        "jobTitle": "二次元创作者与前端设计师",
+        "description": "专注动画分镜、界面设计与前端交互的个人创作者。"
+      }
+    </script>
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
+  <body id="top">
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
     <div class="ambient ambient-one"></div>
     <div class="ambient ambient-two"></div>
-    <header class="site-header" id="top">
+    <header class="site-header">
       <a class="brand" href="#top" aria-label="Niya 主页">
         <span class="brand-mark">N</span>
         <span>Niya</span>
@@ -41,7 +69,7 @@
         <section class="mini-player" data-mini-player aria-label="迷你播放器">
           <button class="mini-track" type="button" data-mini-open aria-label="打开月色音乐盒完整播放器">
             <span class="mini-dot" aria-hidden="true"></span>
-            <span>
+            <span class="mini-track-copy">
               <strong data-mini-title>Moonlit Room</strong>
               <small data-mini-scene>月色房间</small>
             </span>
@@ -59,7 +87,7 @@
       </div>
     </header>
 
-    <main>
+    <main id="main-content" tabindex="-1">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
           <p class="role">二次元创作者 / Front-end Dreamer</p>
@@ -69,12 +97,18 @@
           </p>
           <div class="hero-actions">
             <a class="button primary" href="#works">查看作品</a>
-            <a class="button secondary" href="#contact">写信给我</a>
+            <a class="button secondary" href="#contact">联系我</a>
           </div>
         </div>
         <div class="hero-art" aria-label="Niya 的创作空间插画">
           <img
             src="./assets/hero-illustration.jpg"
+            srcset="
+              ./assets/hero-illustration-720.jpg 720w,
+              ./assets/hero-illustration-1200.jpg 1200w,
+              ./assets/hero-illustration.jpg 1672w
+            "
+            sizes="(max-width: 840px) calc(100vw - 2rem), (max-width: 1280px) 48vw, 590px"
             alt="动漫风创作者在暮光房间里使用电脑的插画"
             width="1672"
             height="941"
@@ -91,7 +125,7 @@
       <section class="section works" id="works" aria-labelledby="works-title">
         <div class="section-heading">
           <h2 id="works-title">精选作品</h2>
-          <p>一些关于界面、故事和微小动效的实验。</p>
+          <p>三个可直接操作的前端原型，选择项目后查看详情与体验。</p>
         </div>
         <div class="work-status" aria-label="作品状态概览">
           <button class="work-status-item" type="button" data-status-target="星轨手帐">
@@ -106,28 +140,29 @@
             <span>花店订单</span>
             <strong data-status-pixel>0 单</strong>
           </button>
-        </div>        <div class="work-layout">
-          <article class="work-card featured selected" data-project="星轨手帐" tabindex="0" role="button" aria-pressed="true">
-            <div class="work-thumb thumb-one"></div>
+        </div>
+        <div class="work-layout" aria-label="选择作品">
+          <button class="work-card featured selected" type="button" data-project="星轨手帐" aria-pressed="true" aria-controls="work-detail-panel">
+            <span class="work-thumb thumb-one" aria-hidden="true"></span>
             <h3>星轨手帐</h3>
             <p>用时间轴和星座视觉管理创作进度，给日常任务一点魔法感。</p>
-          </article>
-          <article class="work-card" data-project="月色音乐盒" tabindex="0" role="button" aria-pressed="false">
-            <div class="work-thumb thumb-two"></div>
+          </button>
+          <button class="work-card" type="button" data-project="月色音乐盒" aria-pressed="false" aria-controls="work-detail-panel">
+            <span class="work-thumb thumb-two" aria-hidden="true"></span>
             <h3>月色音乐盒</h3>
             <p>一款带场景变化的音乐播放器界面，夜晚越深，光越柔。</p>
-          </article>
-          <article class="work-card" data-project="像素花店" tabindex="0" role="button" aria-pressed="false">
-            <div class="work-thumb thumb-three"></div>
+          </button>
+          <button class="work-card" type="button" data-project="像素花店" aria-pressed="false" aria-controls="work-detail-panel">
+            <span class="work-thumb thumb-three" aria-hidden="true"></span>
             <h3>像素花店</h3>
             <p>小型电商原型，把像素物件、库存和愿望清单组合成轻游戏体验。</p>
-          </article>
+          </button>
         </div>
-        <article class="work-detail" aria-live="polite" aria-labelledby="work-detail-title">
+        <article class="work-detail" id="work-detail-panel" aria-live="polite" aria-labelledby="work-detail-title">
           <div class="detail-preview thumb-one" data-detail-preview></div>
           <div class="detail-copy">
             <p class="detail-kicker" data-detail-type>创作管理原型</p>
-            <h3 id="work-detail-title" data-detail-title>星轨手帐</h3>
+            <h3 id="work-detail-title" data-detail-title tabindex="-1">星轨手帐</h3>
             <p data-detail-summary>
               用时间轴和星座视觉管理创作进度，把零散灵感收束成每日可推进的小任务。
             </p>
@@ -167,7 +202,7 @@
           <form class="star-panel star-form" data-star-task-form>
             <label for="star-task-input">今日星轨任务</label>
             <div class="star-input-row">
-              <input id="star-task-input" data-star-task-input type="text" maxlength="36" placeholder="例如：整理角色设定草稿" autocomplete="off" />
+              <input id="star-task-input" data-star-task-input type="text" maxlength="36" placeholder="例如：整理角色设定草稿" autocomplete="off" required />
               <button type="submit">添加任务</button>
             </div>
           </form>
@@ -180,9 +215,10 @@
           </div>
           <form class="star-panel star-form star-note-form" data-star-note-form>
             <label for="star-note-input">灵感片段</label>
-            <textarea id="star-note-input" data-star-note-input maxlength="120" rows="3" placeholder="记录一句台词、一个画面或一个新点子"></textarea>
+            <textarea id="star-note-input" data-star-note-input maxlength="120" rows="3" placeholder="记录一句台词、一个画面或一个新点子" required></textarea>
+            <label class="compact-label" for="star-note-tag">灵感标签（可选）</label>
             <div class="star-input-row">
-              <input data-star-note-tag type="text" maxlength="12" placeholder="标签，如 分镜" autocomplete="off" />
+              <input id="star-note-tag" data-star-note-tag type="text" maxlength="12" placeholder="例如：分镜" autocomplete="off" />
               <button type="submit">收进手帐</button>
             </div>
           </form>
@@ -313,8 +349,9 @@
         <div>
           <h2 id="contact-title">保持联系</h2>
           <p>如果你也喜欢温柔、清晰、带一点幻想感的界面，我们可以一起做点可爱的东西。</p>
+          <p class="contact-status" id="contact-status">联系邮箱：keyimeng880@gmail.com</p>
         </div>
-        <button class="button primary contact-button" type="button">写信给我</button>
+        <a class="button primary contact-button" href="mailto:keyimeng880@gmail.com" aria-describedby="contact-status">发送邮件</a>
       </section>
     </main>
 
@@ -323,6 +360,6 @@
       <span>Made with starlight and careful CSS.</span>
     </footer>
 
-    <script src="./script.js"></script>
+    <script src="./script.js" defer></script>
   </body>
 </html>
