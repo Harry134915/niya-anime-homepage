@@ -159,31 +159,60 @@
           </button>
         </div>
         <article class="work-detail" id="work-detail-panel" aria-live="polite" aria-labelledby="work-detail-title">
-          <div class="detail-preview thumb-one" data-detail-preview></div>
+          <div class="detail-preview thumb-one" data-detail-preview aria-hidden="true">
+            <span data-detail-index>01</span>
+            <strong data-detail-visual-title>星轨手帐</strong>
+            <small>Interactive prototype</small>
+          </div>
           <div class="detail-copy">
             <p class="detail-kicker" data-detail-type>创作管理原型</p>
             <h3 id="work-detail-title" data-detail-title tabindex="-1">星轨手帐</h3>
             <p data-detail-summary>
               用时间轴和星座视觉管理创作进度，把零散灵感收束成每日可推进的小任务。
             </p>
-            <div class="detail-columns">
+            <dl class="detail-meta">
               <div>
-                <span class="detail-label">亮点</span>
-                <ul class="detail-list" data-detail-highlights>
-                  <li>星轨式进度视图</li>
-                  <li>灵感片段快速归档</li>
-                  <li>温柔的任务完成反馈</li>
-                </ul>
+                <dt>我的职责</dt>
+                <dd data-detail-role>独立完成产品构思、界面设计与前端实现</dd>
               </div>
               <div>
-                <span class="detail-label">工具栈</span>
-                <p class="detail-stack" data-detail-stack>HTML, CSS Grid, Motion Notes</p>
+                <dt>核心场景</dt>
+                <dd data-detail-audience>日常任务与碎片灵感管理</dd>
+              </div>
+              <div>
+                <dt>技术栈</dt>
+                <dd data-detail-stack>HTML · CSS Grid · JavaScript · LocalStorage</dd>
+              </div>
+            </dl>
+            <div class="detail-story">
+              <section>
+                <span class="detail-label">设计挑战</span>
+                <p data-detail-challenge>在有限空间里同时呈现任务、灵感和整体进度，又不能让记录过程变得沉重。</p>
+              </section>
+              <section>
+                <span class="detail-label">解决方案</span>
+                <p data-detail-solution>用任务与笔记双区组织内容，以星轨进度和即时状态反馈连接每一次操作。</p>
+              </section>
+            </div>
+            <div class="detail-results">
+              <span class="detail-label">可验证结果</span>
+              <ul class="detail-result-list" data-detail-results>
+                <li>数据保存在当前浏览器</li>
+                <li>支持任务增删与完成</li>
+                <li>390px 起响应式布局</li>
+                <li>支持键盘操作</li>
+              </ul>
+            </div>
+            <div class="detail-footer">
+              <p class="detail-status" data-detail-status>已接入任务和灵感手帐，支持本地保存</p>
+              <div class="detail-actions">
+                <a class="button primary detail-demo" data-detail-demo href="#star-journal-demo">体验项目</a>
+                <a class="button secondary detail-source" href="https://github.com/Harry134915/niya-anime-homepage" target="_blank" rel="noreferrer">查看源码</a>
               </div>
             </div>
-            <p class="detail-status" data-detail-status>状态：正在打磨可交互原型</p>
           </div>
         </article>
-        <section class="star-journal" data-star-journal aria-labelledby="star-journal-title">
+        <section class="star-journal" id="star-journal-demo" data-star-journal aria-labelledby="star-journal-title">
           <div class="star-orbit" aria-hidden="true">
             <span class="orbit-ring"></span>
             <span class="orbit-ring"></span>
@@ -230,7 +259,7 @@
             <div class="star-note-list" data-star-note-list aria-live="polite"></div>
           </div>
         </section>
-        <section class="pixel-shop is-hidden" data-pixel-shop aria-labelledby="pixel-shop-title" aria-hidden="true">
+        <section class="pixel-shop is-hidden" id="pixel-shop-demo" data-pixel-shop aria-labelledby="pixel-shop-title" aria-hidden="true">
           <div class="pixel-counter">
             <p class="detail-kicker">Pixel Flower Shop</p>
             <h3 id="pixel-shop-title">像素花店</h3>
@@ -257,7 +286,7 @@
             <div class="pixel-wishlist-list" data-pixel-wishlist-list aria-live="polite"></div>
           </aside>
         </section>
-        <section class="moon-player is-hidden" data-moon-player aria-labelledby="moon-player-title" aria-hidden="true">
+        <section class="moon-player is-hidden" id="moon-player-demo" data-moon-player aria-labelledby="moon-player-title" aria-hidden="true">
           <audio data-moon-audio preload="metadata"></audio>
           <div class="moon-cover" data-moon-cover>
             <div class="moon-disc" aria-hidden="true">

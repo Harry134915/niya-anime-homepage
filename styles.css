@@ -678,8 +678,8 @@ body.night .work-status-item {
 
 .work-detail {
   display: grid;
-  grid-template-columns: minmax(16rem, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(1.2rem, 3vw, 2rem);
+  grid-template-columns: minmax(13rem, 0.58fr) minmax(0, 1.42fr);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
   align-items: stretch;
   margin-top: 1rem;
   overflow: hidden;
@@ -693,17 +693,44 @@ body.night .work-status-item {
 }
 
 .detail-preview {
-  min-height: 18rem;
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
   margin: 0.8rem;
   border-radius: 8px;
+  padding: clamp(1.1rem, 2.4vw, 1.6rem);
+  color: #fff;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34);
+  text-shadow: 0 2px 16px rgba(35, 25, 54, 0.28);
+}
+
+.detail-preview span {
+  font-family: "Quicksand", sans-serif;
+  font-size: clamp(3.4rem, 6vw, 5.4rem);
+  font-weight: 700;
+  line-height: 0.9;
+}
+
+.detail-preview strong {
+  margin-top: auto;
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  line-height: 1.15;
+}
+
+.detail-preview small {
+  margin-top: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 .detail-copy {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(1.4rem, 3vw, 2.2rem) clamp(1.3rem, 3vw, 2rem) clamp(1.4rem, 3vw, 2.2rem) 0;
+  padding: clamp(1.4rem, 3vw, 2rem) clamp(1.3rem, 3vw, 2rem) clamp(1.4rem, 3vw, 2rem) 0;
 }
 
 .detail-kicker {
@@ -724,11 +751,48 @@ body.night .work-status-item {
   line-height: 1.8;
 }
 
-.detail-columns {
+.detail-meta {
   display: grid;
-  grid-template-columns: 1fr minmax(10rem, 0.72fr);
-  gap: 1rem;
-  margin: 0.3rem 0 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0.45rem 0 1.15rem;
+  border-block: 1px solid var(--line);
+}
+
+.detail-meta div {
+  min-width: 0;
+  padding: 0.9rem 1rem 0.9rem 0;
+}
+
+.detail-meta div + div {
+  border-left: 1px solid var(--line);
+  padding-left: 1rem;
+}
+
+.detail-meta dt {
+  margin-bottom: 0.35rem;
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
+.detail-meta dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.detail-story {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 1.5rem);
+  margin-bottom: 1.05rem;
+}
+
+.detail-story p {
+  margin-bottom: 0;
+  font-size: 0.92rem;
 }
 
 .detail-label {
@@ -739,24 +803,65 @@ body.night .work-status-item {
   font-weight: 900;
 }
 
-.detail-list {
-  display: grid;
-  gap: 0.35rem;
-  margin: 0;
-  padding-left: 1.05rem;
-  color: var(--muted);
-  line-height: 1.65;
+.detail-results {
+  margin-bottom: 1.15rem;
 }
 
-.detail-stack {
-  margin-bottom: 0;
-  font-weight: 700;
+.detail-result-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem 1rem;
+  margin: 0;
+  padding: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.65;
+  list-style: none;
+}
+
+.detail-result-list li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.detail-result-list li::before {
+  position: absolute;
+  top: 0.68em;
+  left: 0;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: var(--cyan);
+  content: "";
+  box-shadow: 0 0 0 3px rgba(68, 216, 239, 0.14);
+}
+
+.detail-footer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
 }
 
 .detail-status {
+  max-width: 27rem;
   margin-bottom: 0;
   font-size: 0.92rem;
   font-weight: 800;
+}
+
+.detail-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.6rem;
+}
+
+.detail-actions .button {
+  min-height: 2.75rem;
+  padding: 0.72rem 1rem;
+  font-size: 0.86rem;
 }
 
 .star-journal {
@@ -1916,8 +2021,9 @@ meter::-webkit-meter-optimum-value {
     min-height: 13rem;
   }
 
-  .detail-columns {
-    grid-template-columns: 1fr;
+  .detail-footer {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .skill-row {
@@ -2060,6 +2166,30 @@ meter::-webkit-meter-optimum-value {
 
   .button {
     flex: 1 1 8rem;
+  }
+
+  .detail-meta,
+  .detail-story,
+  .detail-result-list {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-meta div {
+    padding: 0.75rem 0;
+  }
+
+  .detail-meta div + div {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .detail-actions {
+    width: 100%;
+  }
+
+  .detail-actions .button {
+    min-width: 0;
   }
 
   .hero-art::before {

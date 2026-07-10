@@ -8,30 +8,48 @@ const siteHeader = document.querySelector(".site-header");
 
 const workDetails = {
   星轨手帐: {
+    index: "01",
     type: "创作管理原型",
     title: "星轨手帐",
     summary: "用时间轴和星座视觉管理创作进度，把零散灵感收束成每日可推进的小任务。",
-    highlights: ["星轨式进度视图", "灵感片段快速归档", "温柔的任务完成反馈"],
-    stack: "HTML, CSS Grid, Motion Notes",
-    status: "状态：已接入星轨任务和灵感手帐，支持本地保存",
+    role: "独立完成产品构思、界面设计与前端实现",
+    audience: "日常任务与碎片灵感管理",
+    stack: "HTML · CSS Grid · JavaScript · LocalStorage",
+    challenge: "在有限空间里同时呈现任务、灵感和整体进度，又不能让记录过程变得沉重。",
+    solution: "用任务与笔记双区组织内容，以星轨进度和即时状态反馈连接每一次操作。",
+    results: ["数据保存在当前浏览器", "支持任务增删与完成", "390px 起响应式布局", "支持键盘操作"],
+    status: "已接入任务和灵感手帐，支持本地保存",
+    demoTarget: "#star-journal-demo",
     previewClass: "thumb-one",
   },
   月色音乐盒: {
+    index: "02",
     type: "沉浸式播放器界面",
     title: "月色音乐盒",
     summary: "根据夜晚时段切换背景光感和播放氛围，让音乐播放器像一间会呼吸的小房间。",
-    highlights: ["场景随时间渐变", "播放状态微动效", "适合桌面和移动端的控件层级"],
-    stack: "HTML, CSS Custom Properties, Interaction States",
-    status: "状态：已接入本地音频，支持播放、切歌与氛围切换",
+    role: "独立完成播放器视觉、状态设计与媒体交互",
+    audience: "浏览作品与整理灵感时的氛围播放",
+    stack: "HTML Audio · CSS Custom Properties · JavaScript",
+    challenge: "让播放状态、曲目队列和场景氛围保持同步，同时保证桌面与手机控件都清晰易用。",
+    solution: "建立统一播放器状态，以进度、队列和场景文案共同反馈当前曲目，并复用到顶部迷你播放器。",
+    results: ["内置 3 首可切换曲目", "支持进度与音量控制", "完整与迷你播放器同步", "兼容减少动态效果偏好"],
+    status: "已接入本地音频，支持播放、切歌与氛围切换",
+    demoTarget: "#moon-player-demo",
     previewClass: "thumb-two",
   },
   像素花店: {
+    index: "03",
     type: "轻游戏电商原型",
     title: "像素花店",
     summary: "把像素花束、库存和愿望清单结合成轻游戏式购买体验，让浏览商品更像整理一座小花园。",
-    highlights: ["像素网格商品预览", "愿望清单反馈", "库存状态的游戏化表达"],
-    stack: "HTML, CSS Patterns, Prototype Logic",
-    status: "状态：已接入订单配花、库存和愿望清单互动",
+    role: "独立完成交互规则、像素视觉与前端状态逻辑",
+    audience: "通过顾客需求完成花束匹配的轻量游戏",
+    stack: "HTML · CSS Patterns · JavaScript · LocalStorage",
+    challenge: "把商品选择做成有目标的互动过程，并让库存、订单和愿望清单的变化始终容易理解。",
+    solution: "用顾客标签建立匹配规则，在选择后即时解释结果，并同步更新库存、订单和愿望清单。",
+    results: ["包含顾客需求匹配规则", "库存与订单实时联动", "愿望清单保存在浏览器", "支持重置完整体验"],
+    status: "已接入订单配花、库存和愿望清单互动",
+    demoTarget: "#pixel-shop-demo",
     previewClass: "thumb-three",
   },
 };
@@ -61,12 +79,19 @@ const moonTracks = [
 ];
 
 const detailPreview = document.querySelector("[data-detail-preview]");
+const detailIndex = document.querySelector("[data-detail-index]");
+const detailVisualTitle = document.querySelector("[data-detail-visual-title]");
 const detailType = document.querySelector("[data-detail-type]");
 const detailTitle = document.querySelector("[data-detail-title]");
 const detailSummary = document.querySelector("[data-detail-summary]");
-const detailHighlights = document.querySelector("[data-detail-highlights]");
+const detailRole = document.querySelector("[data-detail-role]");
+const detailAudience = document.querySelector("[data-detail-audience]");
 const detailStack = document.querySelector("[data-detail-stack]");
+const detailChallenge = document.querySelector("[data-detail-challenge]");
+const detailSolution = document.querySelector("[data-detail-solution]");
+const detailResults = document.querySelector("[data-detail-results]");
 const detailStatus = document.querySelector("[data-detail-status]");
+const detailDemo = document.querySelector("[data-detail-demo]");
 const workDetail = document.querySelector("[data-detail-title]").closest(".work-detail");
 const workCards = [...document.querySelectorAll(".work-card")];
 const workStatusItems = [...document.querySelectorAll("[data-status-target]")];
@@ -682,18 +707,25 @@ const selectWorkCard = (card, { reveal = false } = {}) => {
   });
 
   detailPreview.className = `detail-preview ${detail.previewClass}`;
+  detailIndex.textContent = detail.index;
+  detailVisualTitle.textContent = detail.title;
   detailType.textContent = detail.type;
   detailTitle.textContent = detail.title;
   detailSummary.textContent = detail.summary;
-  detailHighlights.replaceChildren(
-    ...detail.highlights.map((highlight) => {
+  detailRole.textContent = detail.role;
+  detailAudience.textContent = detail.audience;
+  detailStack.textContent = detail.stack;
+  detailChallenge.textContent = detail.challenge;
+  detailSolution.textContent = detail.solution;
+  detailResults.replaceChildren(
+    ...detail.results.map((result) => {
       const item = document.createElement("li");
-      item.textContent = highlight;
+      item.textContent = result;
       return item;
     })
   );
-  detailStack.textContent = detail.stack;
   detailStatus.textContent = detail.status;
+  detailDemo.setAttribute("href", detail.demoTarget);
   toggleStarJournal(project === "星轨手帐");
   togglePixelShop(project === "像素花店");
   toggleMoonPlayer(project === "月色音乐盒");
